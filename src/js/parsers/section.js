@@ -111,7 +111,7 @@ class SectionParser {
       addSection: (section) => {
         // avoid creating empty paragraphs due to wrappers elements around
         // parser-plugin-handled elements
-        if (this.state.section.isMarkerable && !this.state.text) {
+        if (this.state.section && this.state.section.isMarkerable && !this.state.text) {
           this.state.section = null;
         } else {
           this._closeCurrentSection();
