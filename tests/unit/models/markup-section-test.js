@@ -1,6 +1,7 @@
 import PostNodeBuilder from 'mobiledoc-kit/models/post-node-builder';
 import Helpers from '../../test-helpers';
 import Position from 'mobiledoc-kit/utils/cursor/position';
+import { VALID_ATTRIBUTES, INVALID_ATTRIBUTES } from '../../helpers/sections';
 
 const {module, test} = Helpers;
 
@@ -20,6 +21,27 @@ test('a section can append a marker', (assert) => {
 
   s1.markers.append(m1);
   assert.equal(s1.markers.length, 1);
+});
+
+VALID_ATTRIBUTES.forEach(attribute => {
+  // eslint-disable-next-line no-loop-func
+  test(`a section can have attribute "${attribute.key}" with value "${attribute.value}`, (assert) => {
+    const s1 = builder.createMarkupSection('P', [], false, { [attribute.key]: attribute.value });
+    assert.deepEqual(
+      s1.attributes,
+      { [attribute.key]: attribute.value },
+      'Attribute set at instantiation'
+    );
+  });
+});
+
+INVALID_ATTRIBUTES.forEach(attribute => {
+  // eslint-disable-next-line no-loop-func
+  test(`a section throws when invalid attribute "${attribute.key}" is passed to a marker`, (assert) => {
+    assert.throws(() => {
+      builder.createMarkupSection('P', [], false, attribute);
+    });
+  });
 });
 
 test('#isBlank returns true if the text length is zero for two markers', (assert) => {

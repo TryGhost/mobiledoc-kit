@@ -1,7 +1,10 @@
 import Markerable from './_markerable';
+import { attributable } from './_attributable';
+import { MARKUP_SECTION_TYPE } from './types';
+
 import { normalizeTagName } from '../utils/dom-utils';
 import { contains } from '../utils/array-utils';
-import { MARKUP_SECTION_TYPE } from './types';
+import { entries } from '../utils/object-utils';
 
 // valid values of `tagName` for a MarkupSection
 export const VALID_MARKUP_SECTION_TAGNAMES = [
@@ -33,8 +36,12 @@ export const MARKUP_SECTION_ELEMENT_NAMES = [
 export const DEFAULT_TAG_NAME = VALID_MARKUP_SECTION_TAGNAMES[8];
 
 const MarkupSection = class MarkupSection extends Markerable {
-  constructor(tagName=DEFAULT_TAG_NAME, markers=[]) {
+  constructor(tagName=DEFAULT_TAG_NAME, markers=[], attributes={}) {
     super(MARKUP_SECTION_TYPE, tagName, markers);
+
+    attributable(this);
+    entries(attributes).forEach(([k,v]) => this.setAttribute(k, v));
+
     this.isMarkupSection = true;
   }
 
@@ -44,7 +51,7 @@ const MarkupSection = class MarkupSection extends Markerable {
 
   splitAtMarker(marker, offset=0) {
     let [beforeSection, afterSection] = [
-      this.builder.createMarkupSection(this.tagName, []),
+      this.builder.createMarkupSection(this.tagName, [], false, this.attributes),
       this.builder.createMarkupSection()
     ];
 

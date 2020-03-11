@@ -46,7 +46,7 @@ const SKIPPABLE_ELEMENT_TAG_NAMES = [
   'style', 'head', 'title', 'meta'
 ].map(normalizeTagName);
 
-const NEWLINES = /\n/g;
+const NEWLINES = /\s*\n\s*/g;
 function sanitize(text) {
   return text.replace(NEWLINES, ' ');
 }
@@ -158,6 +158,13 @@ class SectionParser {
       let isMarkupSection = contains(VALID_MARKUP_SECTION_TAGNAMES, tagName);
       let isNestedListSection = isListSection && this.state.section.isListItem;
       let lastSection = this.sections[this.sections.length - 1];
+
+      // lists can continue after breaking out for a markup section,
+      // in that situation, start a new list using the same list type
+      if (isListItem && this.state.section.isMarkupSection) {
+        this._closeCurrentSection();
+        this._updateStateFromElement(node.parentElement);
+      }
 
       // we can hit a list item after parsing a nested list, when that happens
       // and the lists are of different types we need to make sure we switch
@@ -377,12 +384,23 @@ class SectionParser {
     let sectionType,
         tagName,
         inferredTagName = false;
+
     if (isTextNode(element)) {
       tagName = DEFAULT_TAG_NAME;
       sectionType = MARKUP_SECTION_TYPE;
       inferredTagName = true;
     } else {
       tagName = normalizeTagName(element.tagName);
+
+      // blockquote>p is valid html and should be treated as a blockquote section
+      // rather than a plain markup section
+      if (
+        tagName === 'p' &&
+        element.parentElement &&
+        normalizeTagName(element.parentElement.tagName) === 'blockquote'
+      ) {
+        tagName = 'blockquote';
+      }
 
       if (contains(VALID_LIST_SECTION_TAGNAMES, tagName)) {
         sectionType = LIST_SECTION_TYPE;

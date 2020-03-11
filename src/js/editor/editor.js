@@ -203,7 +203,7 @@ class Editor {
         return this._parser.parse(dom);
       }
     } else {
-      return this.builder.createPost();
+      return this.builder.createPost([this.builder.createMarkupSection()]);
     }
   }
 
@@ -489,6 +489,10 @@ class Editor {
   get activeSection() {
     const { activeSections } = this;
     return activeSections[activeSections.length - 1];
+  }
+
+  get activeSectionAttributes() {
+    return this._editState.activeSectionAttributes;
   }
 
   detectMarkupInRange(range, markupTagName) {
@@ -951,6 +955,29 @@ class Editor {
    */
   toggleSection(tagName) {
     this.run(postEditor => postEditor.toggleSection(tagName, this.range));
+  }
+
+  /**
+   * Sets an attribute for the current active section(s).
+   *
+   * @param {String} key The attribute. The only valid attribute is 'text-align'.
+   * @param {String} value The value of the attribute.
+   * @public
+   * @see PostEditor#setAttribute
+   */
+  setAttribute(key, value) {
+    this.run(postEditor => postEditor.setAttribute(key, value, this.range));
+  }
+
+  /**
+   * Removes an attribute from the current active section(s).
+   *
+   * @param {String} key The attribute. The only valid attribute is 'text-align'.
+   * @public
+   * @see PostEditor#removeAttribute
+   */
+  removeAttribute(key) {
+    this.run(postEditor => postEditor.removeAttribute(key, this.range));
   }
 
   /**

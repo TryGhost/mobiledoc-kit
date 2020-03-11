@@ -1,9 +1,16 @@
+<a name="0.12.4-ghost.1"></a>
+## <small>0.12.4-ghost.1 (2020-03-11)</small>
+
+
+
+
 <a name="0.11.2-ghost.4"></a>
 ## <small>0.11.2-ghost.4 (2019-06-03)</small>
 
 * 🐛 Fixed range#expandByMarker not expanding to beginning/end of section (#677) ([0000d1d](https://github.com/bustle/mobiledoc-kit/commit/0000d1d)), closes [#677](https://github.com/bustle/mobiledoc-kit/issues/677)
 * Copy update in demo ([77de471](https://github.com/bustle/mobiledoc-kit/commit/77de471))
 * Fix sectionParser obliterating plain text content in certain circumstances (#685) ([e5f877f](https://github.com/bustle/mobiledoc-kit/commit/e5f877f)), closes [#685](https://github.com/bustle/mobiledoc-kit/issues/685)
+* v0.11.2-ghost.4 ([3b0f375](https://github.com/bustle/mobiledoc-kit/commit/3b0f375))
 
 
 

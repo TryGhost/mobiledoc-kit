@@ -1,17 +1,17 @@
 {
   "name": "@tryghost/mobiledoc-kit",
-  "version": "0.11.2-ghost.4",
+  "version": "0.12.4-ghost.1",
   "description": "A toolkit for building WYSIWYG editors with Mobiledoc",
   "repository": "https://github.com/bustle/mobiledoc-kit",
   "scripts": {
-    "start": "./node_modules/.bin/broccoli serve --host 0.0.0.0",
-    "test:ci": "npm run build:docs && npm run build && ./node_modules/.bin/testem ci -f testem-ci.js",
-    "test": "npm run build:docs && npm run build && ./node_modules/.bin/testem ci -f testem.js",
-    "build": "rm -rf dist && ./node_modules/.bin/broccoli build dist",
-    "build:docs": "./node_modules/.bin/jsdoc -c ./.jsdoc",
+    "start": "broccoli serve --host 0.0.0.0",
+    "test:ci": "npm run build:docs && npm run build && testem ci -f testem-ci.js",
+    "test": "npm run build:docs && npm run build && testem ci -f testem.js",
+    "build": "rm -rf dist && broccoli build dist",
+    "build:docs": "jsdoc -c ./.jsdoc",
     "build:website": "npm run build && npm run build:docs && ./bin/build-website.sh",
     "deploy:website": "./bin/deploy-website.sh",
-    "update-changelog": "./node_modules/.bin/conventional-changelog -i CHANGELOG.md -r 0 -s",
+    "update-changelog": "conventional-changelog -i CHANGELOG.md -r 0 -s",
     "version": "npm run update-changelog && git add CHANGELOG.md",
     "prepublish": "npm run build"
   },
@@ -37,8 +37,8 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "mobiledoc-dom-renderer": "0.6.5",
-    "mobiledoc-text-renderer": "0.3.2"
+    "mobiledoc-dom-renderer": "0.7.0",
+    "mobiledoc-text-renderer": "0.4.0"
   },
   "devDependencies": {
     "broccoli": "^1.1.3",
@@ -55,8 +55,8 @@
     "conventional-changelog-cli": "^1.3.2",
     "jquery": "^3.2.1",
     "jsdoc": "^3.5.4",
-    "saucie": "^3.3.0",
-    "testem": "^2.0.0"
+    "saucie": "^3.3.2",
+    "testem": "^2.17.0"
   },
   "main": "dist/commonjs/mobiledoc-kit/index.js"
 }

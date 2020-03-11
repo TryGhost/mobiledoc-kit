@@ -274,6 +274,58 @@ test("#parse handles multiple headers in list item", assert => {
   assert.equal(h2.tagName, 'h2');
 });
 
+// https://github.com/bustle/mobiledoc-kit/issues/714
+test('#parse handles list items following a markup-section breakout', (assert) => {
+  let container = buildDOM(`
+    <ul><li>One</li><li><h2>Two</h2></li><li>Three</li><li>Four</li></ul>
+  `);
+
+  let element = container.firstChild;
+  parser = new SectionParser(builder);
+  let sections = parser.parse(element);
+
+  assert.equal(sections.length, 3, '3 sections');
+
+  assert.equal(sections[0].type, 'list-section');
+  assert.equal(sections[0].items.length, 1);
+  assert.equal(sections[0].items.objectAt(0).text, 'One');
+
+  assert.equal(sections[1].type, 'markup-section');
+  assert.equal(sections[1].tagName, 'h2');
+  assert.equal(sections[1].text, 'Two');
+
+  assert.equal(sections[2].type, 'list-section');
+  assert.equal(sections[2].items.length, 2);
+  assert.equal(sections[2].items.objectAt(0).text, 'Three');
+  assert.equal(sections[2].items.objectAt(1).text, 'Four');
+});
+
+// https://github.com/bustle/mobiledoc-kit/issues/714
+test('#parse handles "invalid" non-li elems inside lists', (assert) => {
+  let container = buildDOM(`
+    <ul><li>One</li><h2>Two</h2><li>Three</li><li>Four</li></ul>
+  `);
+
+  let element = container.firstChild;
+  parser = new SectionParser(builder);
+  let sections = parser.parse(element);
+
+  assert.equal(sections.length, 3, '3 sections');
+
+  assert.equal(sections[0].type, 'list-section');
+  assert.equal(sections[0].items.length, 1);
+  assert.equal(sections[0].items.objectAt(0).text, 'One');
+
+  assert.equal(sections[1].type, 'markup-section');
+  assert.equal(sections[1].tagName, 'h2');
+  assert.equal(sections[1].text, 'Two');
+
+  assert.equal(sections[2].type, 'list-section');
+  assert.equal(sections[2].items.length, 2);
+  assert.equal(sections[2].items.objectAt(0).text, 'Three');
+  assert.equal(sections[2].items.objectAt(1).text, 'Four');
+});
+
 // see https://github.com/bustle/mobiledoc-kit/issues/656
 test('#parse handles list following node handled by parserPlugin', (assert) => {
   let container = buildDOM(`
@@ -347,6 +399,13 @@ test('#parse handles insignificant whitespace (wrapped)', (assert) => {
   assert.equal(list.items.objectAt(0).text, 'One');
 });
 
+test('#parse handles insignificant whitespace around newlines', (assert) => {
+  let container = buildDOM(`<p>One \n Two</p>`);
+  parser = new SectionParser(builder);
+  let sections = parser.parse(container.firstChild);
+
+  assert.equal(sections[0].text, 'One Two');
+});
 
 test('#parse avoids empty paragraph around wrapped list', (assert) => {
   let container = buildDOM(`
@@ -554,6 +613,45 @@ test('#parse handles card-creating element after plain text', (assert) => {
   assert.equal(sections[0].text.trim(), 'Before');
   assert.equal(sections[1].type, 'card-section');
   assert.equal(sections[2].text.trim(), 'After');
+});
+
+test('#parse handles <p> inside <blockquote>', (assert) => {
+  let container = buildDOM(`
+    <blockquote>
+      <p>One</p>
+      <p>Two</p>
+    </blockquote>
+  `);
+
+  parser = new SectionParser(builder);
+  let sections = parser.parse(container.firstChild);
+
+  assert.equal(sections.length, 2, '2 sections');
+  assert.equal(sections[0].type, 'markup-section');
+  assert.equal(sections[0].tagName, 'blockquote');
+  assert.equal(sections[0].text.trim(), 'One');
+  assert.equal(sections[1].type, 'markup-section');
+  assert.equal(sections[1].tagName, 'blockquote');
+  assert.equal(sections[1].text.trim(), 'Two');
+});
+
+test('#parse allows top-level Comment nodes to be parsed by parser plugins', (assert) => {
+  let element = buildDOM(`<!--parse me-->`).firstChild;
+  let plugins = [function(element, builder, {addMarkerable}) {
+    if (element.nodeType !== 8 && element.nodeValue !== 'parse me') {
+      return;
+    }
+    let marker = builder.createMarker('oh my');
+    addMarkerable(marker);
+  }];
+
+  parser = new SectionParser(builder, {plugins});
+  let sections = parser.parse(element);
+
+  assert.equal(sections.length, 1);
+  let [section] = sections;
+  assert.equal(section.text, 'oh my', 'parses comment with parser plugin');
+  assert.equal(section.markers.length, 1, 'only 1 marker');
 });
 
 test('#parse allows nested Comment nodes to be parsed by parser plugins', (assert) => {
