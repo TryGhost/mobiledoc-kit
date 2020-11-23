@@ -1,9 +1,16 @@
+<a name="0.12.5-ghost.1"></a>
+## <small>0.12.5-ghost.1 (2020-11-23)</small>
+
+* Applied upstream v0.12.5 patches to fix IME bug ([fb95415](https://github.com/bustle/mobiledoc-kit/commit/fb95415))
+
+
+
 <a name="0.12.4-ghost.1"></a>
 ## <small>0.12.4-ghost.1 (2020-03-12)</small>
 
 * 🐛 Fixed parser plugin handling of top-level comment nodes ([96710ce](https://github.com/bustle/mobiledoc-kit/commit/96710ce))
-* code style ([a2cbc85](https://github.com/bustle/mobiledoc-kit/commit/a2cbc85))
 * code style ([11d3c5e](https://github.com/bustle/mobiledoc-kit/commit/11d3c5e))
+* code style ([a2cbc85](https://github.com/bustle/mobiledoc-kit/commit/a2cbc85))
 * Fix link tooltips for any font ([c4a0b63](https://github.com/bustle/mobiledoc-kit/commit/c4a0b63))
 * Fixed section parser handling of markup sections inside lists ([b13bebb](https://github.com/bustle/mobiledoc-kit/commit/b13bebb))
 * Fixed spaces added by section parser from newlines in html ([ac5f673](https://github.com/bustle/mobiledoc-kit/commit/ac5f673))
@@ -14,6 +21,7 @@
 * Shrink range to only include sections with non-zero selection when toggling sections 🐔 ([071a555](https://github.com/bustle/mobiledoc-kit/commit/071a555))
 * updating model.post.trimTo && editor.post.toggleSection to ignor tail if not selected. Adding tests ([17433a0](https://github.com/bustle/mobiledoc-kit/commit/17433a0))
 * Use wait helper instead of setTimeout in async tests ([b547d4d](https://github.com/bustle/mobiledoc-kit/commit/b547d4d))
+* v0.12.4-ghost.1 ([5d35fbb](https://github.com/bustle/mobiledoc-kit/commit/5d35fbb))
 
 
 
