@@ -91,3 +91,15 @@ test('uses keyCode as a fallback if key is not supported', (assert) => {
     'keyCode is used if key is not supported'
   );
 });
+
+test('properly handles UTF-16 characters', assert => {
+  let element = $('#qunit-fixture')[0];
+
+  let event = Helpers.dom.createMockEvent('keypress', element, {
+    key: '😀',
+    keyCode: 128512,
+    charCode: 128512,
+  });
+  let keyInstance = Key.fromEvent(event);
+  assert.equal('😀', keyInstance.toString(), 'emoji was not properly decoded');
+});

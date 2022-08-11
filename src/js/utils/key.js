@@ -83,7 +83,7 @@ const Key = class Key {
 
   toString() {
     if (this.isTab()) { return TAB; }
-    return String.fromCharCode(this.charCode);
+    return String.fromCodePoint(this.charCode);
   }
 
   // See https://caniuse.com/#feat=keyboardevent-key for browser support.
