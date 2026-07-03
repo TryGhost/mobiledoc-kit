@@ -1,3 +1,18 @@
+> [!IMPORTANT]
+> **This repository is archived and no longer maintained.**
+>
+> This was TryGhost's fork of [bustle/mobiledoc-kit](https://github.com/bustle/mobiledoc-kit),
+> used by Ghost's original Koenig editor. Ghost has since moved to the
+> [Lexical](https://lexical.dev) framework and no longer uses mobiledoc anywhere —
+> see [Koenig](https://github.com/TryGhost/Koenig) for the current editor packages.
+>
+> The published [`@tryghost/mobiledoc-kit`](https://www.npmjs.com/package/@tryghost/mobiledoc-kit)
+> npm package is deprecated. Existing installs will keep working, but there will be
+> no further updates or security fixes. If you need mobiledoc-kit, use the upstream
+> [bustle/mobiledoc-kit](https://github.com/bustle/mobiledoc-kit) project instead.
+
+---
+
 # Mobiledoc Kit
 
 [![Travis CI Build Status](https://travis-ci.org/bustle/mobiledoc-kit.svg?branch=master)](https://travis-ci.org/bustle/mobiledoc-kit)
